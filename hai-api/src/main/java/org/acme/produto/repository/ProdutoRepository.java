@@ -8,7 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
- * @author Willian Sanches
+ * @author Felipe Shimada
  * @version 1.0
  */
 @ApplicationScoped

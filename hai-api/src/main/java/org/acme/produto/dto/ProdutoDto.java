@@ -73,5 +73,4 @@ public class ProdutoDto {
     public void setDsImagem(String dsImagem) {
         this.dsImagem = dsImagem;
     }
-
 }

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.acme.produto.controller.ProdutoController;
 import org.acme.produto.dto.ProdutoDto;
-import org.acme.produto.orm.Produto;
+import org.acme.produto.dto.ProdutoVerMaisDto;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -32,7 +32,7 @@ public class ProdutoResource {
     ProdutoController produtoController;
 
     @POST
-    public Response create(ProdutoDto produtoDto) {
+    public Response create(ProdutoVerMaisDto produtoDto) {
         return Response.ok().entity(produtoController.create(produtoDto)).build();
     }
 
@@ -44,12 +44,12 @@ public class ProdutoResource {
 
     @GET
     public Response retrieveAll() {
-        List<Produto> produtos = produtoController.retrieve();
+        List<ProdutoDto> produtos = produtoController.retrieve();
         return Response.ok(produtos).build();
     }
 
     @PUT
-    public Response update(ProdutoDto produtoDto) {
+    public Response update(ProdutoVerMaisDto produtoDto) {
         return Response.ok().entity(produtoController.update(produtoDto)).build();
     }
 
