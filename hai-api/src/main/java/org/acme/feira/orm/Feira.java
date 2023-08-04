@@ -1,7 +1,6 @@
 package org.acme.feira.orm;
 
-
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -10,6 +9,8 @@ import org.acme.endereco.orm.Endereco;
 import org.acme.enumerations.DiaSemana;
 import org.acme.orm.BaseEntity;
 import org.acme.produto.orm.Produto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 
@@ -41,13 +42,13 @@ public class Feira extends BaseEntity {
      * Hora início da feira
      */
     @Column(name="hr_inicio")
-    private LocalDate hrInicio;
+    private LocalDateTime hrInicio;
 
     /**
      * Hora término da feira
      */
     @Column(name="hr_termino")
-    private LocalDate hrTermino;
+    private LocalDateTime hrTermino;
 
     /**
      * Dias da semana em que a feira ocorre.
@@ -67,7 +68,8 @@ public class Feira extends BaseEntity {
     /**
      * Lista de produtos presentes na feira.
      */
-    @ManyToMany(mappedBy = "feiras")
+    @ManyToMany(mappedBy = "feiras", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Produto> produtos;
 
     public UUID getIdFeira() {
@@ -86,19 +88,19 @@ public class Feira extends BaseEntity {
         this.nmFeira = nmFeira;
     }
 
-    public LocalDate getHrInicio() {
+    public LocalDateTime getHrInicio() {
         return hrInicio;
     }
 
-    public void setHrInicio(LocalDate hrInicio) {
+    public void setHrInicio(LocalDateTime hrInicio) {
         this.hrInicio = hrInicio;
     }
 
-    public LocalDate getHrTermino() {
+    public LocalDateTime getHrTermino() {
         return hrTermino;
     }
 
-    public void setHrTermino(LocalDate hrTermino) {
+    public void setHrTermino(LocalDateTime hrTermino) {
         this.hrTermino = hrTermino;
     }
 

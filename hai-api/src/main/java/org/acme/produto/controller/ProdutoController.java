@@ -84,6 +84,17 @@ public class ProdutoController {
         return produtoConverter.ormListToDtoList(produtos);
     }
 
+    // será utilizado para o filtro por feiras!!!
+    // // /feiras/{feiraId}/produtos
+    public List<ProdutoDto> retrieveAllProdutosByFeirasId(UUID feiraId) {
+        if(feiraRepository.findById(feiraId) == null) {
+            throw new NotFoundException("Not found feira  with id = " + feiraId);
+        }
+
+        List<Produto> produtos = produtoRepository.find("feiras.idFeira", feiraId).list();
+        return produtoConverter.ormListToDtoList(produtos);
+    }
+
     @Transactional
     public ProdutoDto update(ProdutoVerMaisDto produtoDto) {
         Produto produto = produtoRepository.findById(UUID.fromString(produtoDto.getIdProduto()));

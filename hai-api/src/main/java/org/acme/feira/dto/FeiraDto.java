@@ -1,13 +1,11 @@
 package org.acme.feira.dto;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.acme.endereco.dto.EnderecoDto;
 import org.acme.enumerations.DiaSemana;
 import org.acme.enumerations.SituacaoRegistroEnum;
-import org.acme.produto.dto.ProdutoDto;
 
 /**
  * Representação da entidade "feira"
@@ -29,12 +27,12 @@ public class FeiraDto {
     /**
      * Hora início da feira
      */
-    private LocalDate hrInicio;
+    private LocalDateTime hrInicio;
 
     /**
      * Hora término da feira
      */
-    private LocalDate hrTermino;
+    private LocalDateTime hrTermino;
 
     /**
      * Dias da semana em que a feira ocorre.
@@ -45,11 +43,6 @@ public class FeiraDto {
      * Endereço da feira.
      */
     private EnderecoDto endereco;
-
-    /**
-     * Lista de produtos presentes na feira.
-     */
-    private List<ProdutoDto> produtos;
 
     /**
      * Situação do registro
@@ -72,19 +65,19 @@ public class FeiraDto {
         this.nmFeira = nmFeira;
     }
 
-    public LocalDate getHrInicio() {
+    public LocalDateTime getHrInicio() {
         return hrInicio;
     }
 
-    public void setHrInicio(LocalDate hrInicio) {
+    public void setHrInicio(LocalDateTime hrInicio) {
         this.hrInicio = hrInicio;
     }
 
-    public LocalDate getHrTermino() {
+    public LocalDateTime getHrTermino() {
         return hrTermino;
     }
 
-    public void setHrTermino(LocalDate hrTermino) {
+    public void setHrTermino(LocalDateTime hrTermino) {
         this.hrTermino = hrTermino;
     }
 
@@ -102,14 +95,6 @@ public class FeiraDto {
 
     public void setEndereco(EnderecoDto endereco) {
         this.endereco = endereco;
-    }
-
-    public List<ProdutoDto> getProdutos() {
-        return produtos;
-    }
-
-    public void setProdutos(List<ProdutoDto> produtos) {
-        this.produtos = produtos;
     }
 
     public SituacaoRegistroEnum getStRegistro() {

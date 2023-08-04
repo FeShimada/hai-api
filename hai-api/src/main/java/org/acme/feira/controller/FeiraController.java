@@ -1,6 +1,5 @@
 package org.acme.feira.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,13 +11,12 @@ import org.acme.feira.converter.FeiraConverter;
 import org.acme.feira.dto.FeiraDto;
 import org.acme.feira.orm.Feira;
 import org.acme.feira.repository.FeiraRepository;
-import org.acme.produto.dto.ProdutoDto;
-import org.acme.produto.orm.Produto;
 import org.acme.produto.repository.ProdutoRepository;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 
 /**
  * @author Felipe Shimada <felipeshimada2@gmail.com>
@@ -46,21 +44,7 @@ public class FeiraController {
     public FeiraDto create(FeiraDto feiraDto) {
         Feira feira = feiraConverter.dtoToOrm(feiraDto);
 
-        feiraRepository.persist(feira);
-
-        List<Produto> produtosAssociados = new ArrayList<>();
-        if (feiraDto.getProdutos() != null) {
-            for (ProdutoDto produtoDto : feiraDto.getProdutos()) {
-                Produto produto = produtoRepository.findById(UUID.fromString(produtoDto.getIdProduto()));
-                if (produto != null) {
-                    produtosAssociados.add(produto);
-                } else {
-                    // Tratar o caso onde o ID da feira é inválido ou não existe no banco de dados
-                    // Por exemplo, lançar uma exceção ou simplesmente ignorar a feira desconhecida.
-                }
-            }
-        }
-        feira.setProdutos(produtosAssociados);        
+        feiraRepository.persist(feira);     
 
         setEndereco(feira, feiraDto);
 
@@ -69,17 +53,60 @@ public class FeiraController {
 
     public List<FeiraDto> retrieve() {
         List<Feira> feiras = feiraRepository.findAll().list();
-        System.out.println("AQUIIIIIIIIIIIIIIIIIIIIII");
-        for(Feira feira : feiras) {
-            System.out.println(feira.getProdutos());
-            for(Produto produto : feira.getProdutos()) {
-                System.out.println("AQUIIIIIIIIIIIIIIIIIIIIII");
-                System.out.println(produto.getIdProduto());
-            }
-        }
         
         List<FeiraDto> feiraDtoList = feiraConverter.ormListToDtoList(feiras);
         return feiraDtoList;
+    }
+
+    // será utilizado para buscar todas as feiras relacionadas com aquele produto!
+    // /produtos/{produtoId}/feiras
+    public List<FeiraDto> retrieveAllFeirasByProdutosId(UUID produtoId) {
+        if(produtoRepository.findById(produtoId) == null) {
+            throw new NotFoundException("Not found produto  with id = " + produtoId);
+        }
+
+        List<Feira> feiras = feiraRepository.find("produtos.idProduto", produtoId).list();
+        return feiraConverter.ormListToDtoList(feiras);
+    }
+
+    public FeiraDto retrieve(UUID uuid) {
+
+        Feira feira = feiraRepository.findById(uuid);
+        if(feira == null){
+            throw new NotFoundException("Feira não encontrado");
+        }
+
+        FeiraDto feiraDto = feiraConverter.ormToDto(feira);
+
+        return feiraDto;
+    }
+
+    @Transactional
+    public FeiraDto update(FeiraDto feiraDto) {
+        Feira feira = feiraRepository.findById(UUID.fromString(feiraDto.getIdFeira()));
+        if(feira == null){
+            throw new NotFoundException("Feira não encontrada");
+        }
+
+        setEndereco(feira, feiraDto);
+
+        feiraConverter.dtoToOrm(feiraDto, feira);
+        feiraRepository.persist(feira);
+        return feiraDto;
+    }
+
+    @Transactional
+    public boolean delete(UUID uuid) {
+        try {
+            Feira feira = feiraRepository.findById(uuid);
+            if(feira == null) {
+                throw new NotFoundException("Feira não encontrada");
+            }
+            feiraRepository.delete(feira);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Transactional

@@ -6,10 +6,6 @@ import java.util.UUID;
 
 import org.acme.feira.controller.FeiraController;
 import org.acme.feira.dto.FeiraDto;
-import org.acme.produto.controller.ProdutoController;
-import org.acme.produto.dto.ProdutoDto;
-import org.acme.produto.dto.ProdutoVerMaisDto;
-
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -40,9 +36,30 @@ public class FeiraResource {
     }
 
     @GET
+    @Path("{id}")
+    public Response retrieveById(@PathParam("id") String uuid) {
+        return Response.ok().entity(feiraController.retrieve(UUID.fromString(uuid))).build();
+    }
+
+    @GET
     public Response retrieveAll() {
         List<FeiraDto> feiras = feiraController.retrieve();
         return Response.ok(feiras).build();
+    }
+
+    @PUT
+    public Response update(FeiraDto feiraDto) {
+        return Response.ok().entity(feiraController.update(feiraDto)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response delete(@PathParam("id") String uuid) {
+        if (feiraController.delete(UUID.fromString(uuid))) {
+            return Response.ok().build();
+        } else {
+            return Response.serverError().build();
+        }
     }
     
 }
