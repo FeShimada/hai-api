@@ -1,11 +1,14 @@
 package org.acme.feira.converter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.acme.commons.converter.AbstractConverter;
 import org.acme.endereco.converter.EnderecoConverter;
+import org.acme.enumerations.DiaSemana;
 import org.acme.feira.dto.FeiraDto;
 import org.acme.feira.orm.Feira;
 
@@ -30,7 +33,15 @@ public class FeiraConverter implements AbstractConverter<Feira, FeiraDto> {
         orm.setHrInicio(dto.getHrInicio());
         orm.setHrTermino(dto.getHrTermino());
 
-        orm.setDiasSemana(dto.getDiasSemana());
+        Set<Integer> diasSemanaDto = dto.getDiasSemana();
+        if (diasSemanaDto != null) {
+            Set<DiaSemana> diasSemanaOrm = new HashSet<>();
+            for (Integer diaInt : diasSemanaDto) {
+                DiaSemana diaSemana = DiaSemana.valueOf(diaInt);
+                diasSemanaOrm.add(diaSemana);
+            }
+            orm.setDiasSemana(diasSemanaOrm);
+        }
 
         return orm;
     }
@@ -46,7 +57,18 @@ public class FeiraConverter implements AbstractConverter<Feira, FeiraDto> {
         dto.setNmFeira(orm.getNmFeira());
         dto.setHrInicio(orm.getHrInicio());
         dto.setHrTermino(orm.getHrTermino());
-        dto.setDiasSemana(orm.getDiasSemana());
+       
+        
+        Set<DiaSemana> diasSemanaOrm = orm.getDiasSemana();
+        if (diasSemanaOrm != null) {
+            Set<Integer> diasSemanaDto = new HashSet<>();
+            for (DiaSemana diaSemana : diasSemanaOrm) {
+                int valorDia = diaSemana.getValue(); // Supondo que você tenha um método getValue() na enumeração DiaSemana que retorna o valor inteiro correspondente.
+                diasSemanaDto.add(valorDia);
+            }
+            dto.setDiasSemana(diasSemanaDto);
+        }
+
 
         dto.setEndereco(enderecoConverter.ormToDto(orm.getEndereco()));
 

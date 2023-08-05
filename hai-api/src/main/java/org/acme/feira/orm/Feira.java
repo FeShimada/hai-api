@@ -1,6 +1,5 @@
 package org.acme.feira.orm;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -22,7 +21,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "feira")
 public class Feira extends BaseEntity {
-    
 
     /**
      * Id da feira.
@@ -35,20 +33,20 @@ public class Feira extends BaseEntity {
     /**
      * Nome da feira.
      */
-    @Column(name="nm_feira")
+    @Column(name = "nm_feira")
     private String nmFeira;
 
     /**
      * Hora início da feira
      */
-    @Column(name="hr_inicio")
-    private LocalDateTime hrInicio;
+    @Column(name = "hr_inicio")
+    private String hrInicio;
 
     /**
      * Hora término da feira
      */
-    @Column(name="hr_termino")
-    private LocalDateTime hrTermino;
+    @Column(name = "hr_termino")
+    private String hrTermino;
 
     /**
      * Dias da semana em que a feira ocorre.
@@ -88,22 +86,6 @@ public class Feira extends BaseEntity {
         this.nmFeira = nmFeira;
     }
 
-    public LocalDateTime getHrInicio() {
-        return hrInicio;
-    }
-
-    public void setHrInicio(LocalDateTime hrInicio) {
-        this.hrInicio = hrInicio;
-    }
-
-    public LocalDateTime getHrTermino() {
-        return hrTermino;
-    }
-
-    public void setHrTermino(LocalDateTime hrTermino) {
-        this.hrTermino = hrTermino;
-    }
-
     public Set<DiaSemana> getDiasSemana() {
         return diasSemana;
     }
@@ -128,4 +110,19 @@ public class Feira extends BaseEntity {
         this.produtos = produtos;
     }
 
+    public String getHrInicio() {
+        return hrInicio;
+    }
+
+    public void setHrInicio(String hrInicio) {
+        this.hrInicio = hrInicio;
+    }
+
+    public String getHrTermino() {
+        return hrTermino;
+    }
+
+    public void setHrTermino(String hrTermino) {
+        this.hrTermino = hrTermino;
+    }
 }

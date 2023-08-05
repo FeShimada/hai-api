@@ -1,10 +1,8 @@
 package org.acme.feira.dto;
 
-import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.acme.endereco.dto.EnderecoDto;
-import org.acme.enumerations.DiaSemana;
 import org.acme.enumerations.SituacaoRegistroEnum;
 
 /**
@@ -27,17 +25,17 @@ public class FeiraDto {
     /**
      * Hora início da feira
      */
-    private LocalDateTime hrInicio;
+    private String hrInicio;
 
     /**
      * Hora término da feira
      */
-    private LocalDateTime hrTermino;
+    private String hrTermino;
 
     /**
      * Dias da semana em que a feira ocorre.
      */
-    private Set<DiaSemana> diasSemana;
+    private Set<Integer> diasSemana;
 
     /**
      * Endereço da feira.
@@ -65,29 +63,6 @@ public class FeiraDto {
         this.nmFeira = nmFeira;
     }
 
-    public LocalDateTime getHrInicio() {
-        return hrInicio;
-    }
-
-    public void setHrInicio(LocalDateTime hrInicio) {
-        this.hrInicio = hrInicio;
-    }
-
-    public LocalDateTime getHrTermino() {
-        return hrTermino;
-    }
-
-    public void setHrTermino(LocalDateTime hrTermino) {
-        this.hrTermino = hrTermino;
-    }
-
-    public Set<DiaSemana> getDiasSemana() {
-        return diasSemana;
-    }
-
-    public void setDiasSemana(Set<DiaSemana> diasSemana) {
-        this.diasSemana = diasSemana;
-    }
 
     public EnderecoDto getEndereco() {
         return endereco;
@@ -103,6 +78,30 @@ public class FeiraDto {
 
     public void setStRegistro(SituacaoRegistroEnum stRegistro) {
         this.stRegistro = stRegistro;
+    }
+
+    public String getHrInicio() {
+        return hrInicio;
+    }
+
+    public void setHrInicio(String hrInicio) {
+        this.hrInicio = hrInicio;
+    }
+
+    public String getHrTermino() {
+        return hrTermino;
+    }
+
+    public void setHrTermino(String hrTermino) {
+        this.hrTermino = hrTermino;
+    }
+
+    public Set<Integer> getDiasSemana() {
+        return diasSemana;
+    }
+
+    public void setDiasSemana(Set<Integer> diasSemana) {
+        this.diasSemana = diasSemana;
     }
 
 }
