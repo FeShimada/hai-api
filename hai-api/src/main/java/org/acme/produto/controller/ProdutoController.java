@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.acme.enumerations.SituacaoRegistroEnum;
+import org.acme.feira.controller.FeiraController;
 import org.acme.feira.converter.FeiraConverter;
 import org.acme.feira.dto.FeiraDto;
 import org.acme.feira.orm.Feira;
@@ -42,6 +43,9 @@ public class ProdutoController {
 
     @Inject
     FeiraConverter feiraConverter;
+
+    @Inject
+    FeiraController feiraController;
 
     @Transactional
     public ProdutoDto create(ProdutoVerMaisDto produtoDto) {
@@ -102,17 +106,21 @@ public class ProdutoController {
             throw new NotFoundException("Produto não encontrado");
         }
 
-        produtoDto.getFeiras().forEach(feira -> {
-            if (feira.getStRegistro() == SituacaoRegistroEnum.CREATE) {
-                //feiraController.create(feira, inspecao);
-            } else if (feira.getStRegistro() == SituacaoRegistroEnum.UPDATE) {
-                //feiraController.update(feira);
-            } else if (feira.getStRegistro() == SituacaoRegistroEnum.DELETE) {
-                //feiraController.delete(UUID.fromString(feira.getIdInspecaoResultado()));
-            }
-        });
-
         produtoVerMaisConverter.dtoToOrm(produtoDto, produto);
+        
+        produto.getFeiras().clear();
+
+        for (FeiraDto feiraDto : produtoDto.getFeiras()) {
+            if(feiraDto.getStRegistro() == null) {
+                feiraDto.setStRegistro(SituacaoRegistroEnum.CREATE);
+            }
+            if (feiraDto.getStRegistro() == SituacaoRegistroEnum.CREATE) {
+                Feira feira = feiraRepository.findById(UUID.fromString(feiraDto.getIdFeira()));
+                produto.getFeiras().add(feira);
+            }
+            // Não é necessário tratar feiras marcadas como DELETE, pois as associações foram limpas acima.
+        }
+        
         produtoRepository.persist(produto);
         return produtoDto;
     }

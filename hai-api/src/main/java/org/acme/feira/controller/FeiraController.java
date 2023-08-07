@@ -11,6 +11,7 @@ import org.acme.feira.converter.FeiraConverter;
 import org.acme.feira.dto.FeiraDto;
 import org.acme.feira.orm.Feira;
 import org.acme.feira.repository.FeiraRepository;
+import org.acme.produto.orm.Produto;
 import org.acme.produto.repository.ProdutoRepository;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -102,6 +103,11 @@ public class FeiraController {
             if(feira == null) {
                 throw new NotFoundException("Feira não encontrada");
             }
+
+            for (Produto produto : feira.getProdutos()) {
+                produto.getFeiras().remove(feira);
+            }
+
             feiraRepository.delete(feira);
             return true;
         } catch (Exception e) {

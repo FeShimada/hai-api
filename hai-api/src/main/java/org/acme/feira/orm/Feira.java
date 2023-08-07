@@ -8,9 +8,6 @@ import org.acme.endereco.orm.Endereco;
 import org.acme.enumerations.DiaSemana;
 import org.acme.orm.BaseEntity;
 import org.acme.produto.orm.Produto;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
 /**
@@ -66,8 +63,7 @@ public class Feira extends BaseEntity {
     /**
      * Lista de produtos presentes na feira.
      */
-    @ManyToMany(mappedBy = "feiras", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore
+    @ManyToMany(mappedBy = "feiras", fetch = FetchType.LAZY)
     private List<Produto> produtos;
 
     public UUID getIdFeira() {

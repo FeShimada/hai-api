@@ -58,7 +58,7 @@ public class Produto extends BaseEntity {
     /**
      * Lista de feiras em que o produto está presente.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "produto_feira",
             joinColumns = @JoinColumn(name = "id_produto"),
